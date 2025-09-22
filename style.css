@@ -1,0 +1,486 @@
+/* Define your company colors here */
+:root {
+    --primary-color: #000000; /* Changed to Black */
+    --secondary-color: #e0222a; /* Red from Spectrum logo */
+    --background-color: #f4f7f9;
+    --text-color: #333;
+    --light-text-color: #7f8c8d;
+    --border-color: #ecf0f1;
+    --light-border-color: #bdc3c7;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+#app-container {
+    max-width: 900px;
+    margin: 0 auto;
+    background-color: #fff;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    min-height: 100vh;
+    position: relative;
+}
+
+.screen {
+    display: none;
+    padding: 20px;
+    animation: fadeIn 0.5s ease;
+}
+
+.screen.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--border-color);
+}
+
+header h1 {
+    flex-grow: 1;
+    text-align: center;
+    margin: 0;
+    font-size: 1.8em;
+    color: var(--primary-color);
+}
+
+.back-btn,
+.save-btn,
+.cta-btn {
+    background: none;
+    border: none;
+    color: var(--primary-color);
+    font-size: 1em;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.save-btn {
+    color: var(--secondary-color);
+}
+
+.main-menu {
+    text-align: center;
+}
+
+.main-menu button {
+    display: block;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto 8px auto;
+    padding: 1.2rem;
+    font-size: 1.2em;
+    background-color: var(--primary-color);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.main-menu button:hover {
+    background-color: #4a4d4d;
+    transform: translateY(-2px);
+}
+
+.main-menu button i {
+    margin-right: 10px;
+}
+
+/* Home Screen Specifics */
+.home-logo {
+    display: block;
+    max-width: 80%;
+    height: auto;
+    margin: 40px auto 20px auto;
+}
+
+.app-title {
+    text-align: center;
+    font-size: 2.5em;
+    color: var(--primary-color);
+    margin-bottom: 30px;
+}
+
+form .form-group {
+    margin-bottom: 8px; /* Reduced space between form groups */
+}
+
+form label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+form input,
+form textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--light-border-color);
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 1em;
+}
+
+.cta-btn {
+    width: 100%;
+    padding: 15px;
+    font-size: 1.1em;
+    background-color: var(--secondary-color);
+    color: #fff;
+    border-radius: 8px;
+    transition: background-color 0.3s;
+}
+
+.cta-btn:hover {
+    background-color: #c91e25;
+}
+
+.report-item {
+    padding: 20px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.report-item:hover {
+    background-color: #f8f9fa;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.report-item h3 {
+    margin-top: 0;
+    color: #2c3e50;
+}
+
+.report-meta {
+    font-size: 0.9em;
+    color: var(--light-text-color);
+    margin-bottom: 10px;
+}
+
+.report-summary {
+    white-space: pre-wrap;
+    font-size: 0.9em;
+    color: #555;
+}
+
+.report-summary-box {
+    padding: 15px;
+    background-color: #f9f9f9;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.report-detail {
+    margin-bottom: 8px;
+}
+
+.photo-tools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.photo-tools button {
+    flex-grow: 1;
+    padding: 10px 15px;
+    border-radius: 6px;
+    border: 1px solid var(--light-border-color);
+    background-color: var(--secondary-color); /* Updated to secondary color */
+    color: #fff; /* Updated text color for contrast */
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.photo-tools button:hover {
+    background-color: #c91e25; /* Updated hover color */
+}
+
+#photo-input {
+    display: none;
+}
+
+.photos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+}
+
+.photo-item {
+    position: relative;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.photo-item img {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    display: block;
+}
+
+.photo-info {
+    padding: 10px;
+}
+
+.photo-info h4 {
+    margin: 0 0 5px;
+    font-size: 1em;
+    color: #2c3e50;
+}
+
+.photo-info p {
+    margin: 0;
+    font-size: 0.8em;
+    color: var(--light-text-color);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Photo Editor */
+.photo-editor-header {
+    justify-content: space-between;
+}
+
+.tool-palette {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    background-color: #f1f2f6;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.tool-palette .tool-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 0.8em;
+    padding: 8px;
+    border-radius: 6px;
+    background-color: transparent;
+    border: 1px solid transparent;
+    color: #555;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.tool-palette .tool-btn i {
+    font-size: 1.2em;
+    margin-bottom: 5px;
+}
+
+.tool-palette .tool-btn:hover {
+    background-color: #dfe4ea;
+}
+
+.tool-palette .tool-btn.active {
+    background-color: #dfe4ea;
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.color-picker,
+.brush-size-picker {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.brush-size-picker span {
+    min-width: 25px;
+}
+
+
+.canvas-container {
+    width: 100%;
+    overflow: auto;
+    background-color: #ecf0f1;
+    border-radius: 8px;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+#photo-canvas {
+    border: 1px solid #ccc;
+    display: block;
+    margin: 20px auto;
+}
+
+.photo-comment-box {
+    margin-top: 20px;
+}
+
+.photo-comment-box textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--light-border-color);
+    border-radius: 6px;
+}
+
+/* Loading Overlay */
+#loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.8);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    transition: opacity 0.3s ease;
+    opacity: 0;
+    visibility: hidden;
+}
+
+#loading-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.loader {
+    border: 8px solid #f3f3f3;
+    border-top: 8px solid var(--primary-color);
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+#loading-overlay p {
+    margin-top: 10px;
+    font-size: 1.2em;
+    color: #555;
+}
+
+.photo-item {
+    position: relative;
+    overflow: hidden;
+}
+
+.delete-photo-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    font-size: 14px;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+}
+
+.delete-photo-btn:hover {
+    opacity: 1;
+}
+
+/* --- PDF-specific styles --- */
+/* These styles are used only for the PDF generation */
+
+.pdf-page {
+    page-break-before: always;
+    padding: 20mm;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+.pdf-cover {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+}
+
+.pdf-logo {
+    width: 50%;
+    /* This will reduce the logo size in the PDF */
+    height: auto;
+    max-width: 200px;
+    /* Optional: Sets a maximum size for the logo */
+    margin: 20px auto;
+}
+
+.pdf-title {
+    font-size: 2.5em;
+    margin-top: 20px;
+    color: var(--primary-color);
+}
+
+#pdf-report-summary {
+    margin-top: 30px;
+    text-align: left;
+}
+
+#pdf-report-summary p {
+    margin: 10px 0;
+    font-size: 1.1em;
+}
+
+.pdf-photo-container {
+    margin-bottom: 25px;
+    border: 1px solid var(--border-color);
+    padding: 10px;
+    border-radius: 8px;
+    page-break-inside: avoid;
+}
+
+.pdf-photo {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto 10px auto;
+}
+
+.pdf-comment {
+    font-style: italic;
+    color: #555;
+    font-size: 0.9em;
+}
