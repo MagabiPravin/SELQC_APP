@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quality Control App</title>
+    
+    <!-- PWA Meta Tags -->
+    <link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#000000">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="QC App">
+    <link rel="apple-touch-icon" href="./icon-192.png">
+    
+    <!-- External Resources -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+    <div id="loading-overlay">
+        <div class="loader"></div>
+        <p>Generating PDF...</p>
+    </div>
+
+    <!-- PDF Download Notification -->
+    <div id="pdf-notification" class="notification">
+        <div class="notification-content">
+            <i class="fas fa-file-pdf"></i>
+            <div class="notification-text">
+                <strong>PDF Ready!</strong>
+                <span>Open with PDF viewer app for best experience</span>
+            </div>
+            <button onclick="closePdfNotification()" class="notification-close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+
+    <div id="app-container">
+        <div id="home-screen" class="screen active">
+            <h1 class="app-title">Quality Control App</h1>
+            <div class="main-menu">
+                <button onclick="showNewReportScreen()"><i class="fas fa-plus"></i> New Report</button>
+                <button onclick="showViewReportsScreen()"><i class="fas fa-list"></i> View Reports</button>
+                <button onclick="showHelpScreen()"><i class="fas fa-question-circle"></i> Help</button>
+            </div>
+        </div>
+
+        <div id="new-report-screen" class="screen">
+            <header>
+                <button class="back-btn" onclick="showHomeScreen()"><i class="fas fa-arrow-left"></i> Back</button>
+                <h1>Create New Report</h1>
+            </header>
+            <form id="new-report-form">
+                <div class="form-group">
+                    <label for="report-name">Report Name</label>
+                    <input type="text" id="report-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="project-name">Project Name</label>
+                    <input type="text" id="project-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="engineer-name">Engineer's Name</label>
+                    <input type="text" id="engineer-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="report-date">Date</label>
+                    <input type="date" id="report-date">
+                </div>
+                <div class="form-group">
+                    <label for="report-location">Site Location</label>
+                    <input type="text" id="report-location" required>
+                </div>
+                <div class="form-group">
+                    <label for="report-description">Description</label>
+                    <textarea id="report-description" rows="4"></textarea>
+                </div>
+                <button type="submit" class="cta-btn">Create Report</button>
+            </form>
+        </div>
+
+        <div id="view-reports-screen" class="screen">
+            <header>
+                <button class="back-btn" onclick="showHomeScreen()"><i class="fas fa-arrow-left"></i> Back</button>
+                <h1>Saved Reports</h1>
+            </header>
+            <div id="reports-list"></div>
+        </div>
+
+        <!-- UPDATED: Report Editor with Pages System -->
+        <div id="report-editor-screen" class="screen">
+            <header>
+                <button class="back-btn" onclick="showViewReportsScreen()"><i class="fas fa-arrow-left"></i> Back</button>
+                <h1 id="current-report-title"></h1>
+                <button onclick="showPageManager()" class="cta-btn"><i class="fas fa-file-alt"></i> Manage Pages</button>
+            </header>
+            <div id="report-details" class="report-summary-box"></div>
+            <div class="photo-tools">
+                <button onclick="generatePDF()" class="cta-btn"><i class="fas fa-file-pdf"></i> Generate PDF</button>
+            </div>
+            <div id="pages-container" class="pages-grid"></div>
+        </div>
+
+        <!-- NEW: Page Manager Screen -->
+        <div id="page-manager-screen" class="screen">
+            <header>
+                <button class="back-btn" onclick="showReportEditor()"><i class="fas fa-arrow-left"></i> Back</button>
+                <h1>Page Manager</h1>
+                <button onclick="addNewPage()" class="cta-btn"><i class="fas fa-plus"></i> Add Page</button>
+            </header>
+            
+            <div class="page-navigation">
+                <button onclick="previousPage()" class="nav-btn" id="prev-btn"><i class="fas fa-chevron-left"></i> Previous</button>
+                <span class="page-counter">Page <span id="page-current">1</span> of <span id="page-total">1</span></span>
+                <button onclick="nextPage()" class="nav-btn" id="next-btn">Next <i class="fas fa-chevron-right"></i></button>
+            </div>
+            
+            <div class="page-content">
+                <div class="photo-section">
+                    <h3>Page Photo</h3>
+                    <div class="photo-upload-area" id="page-photo-container" onclick="triggerPagePhotoUpload()">
+                        <div class="upload-placeholder" id="page-photo-placeholder">
+                            <i class="fas fa-camera"></i>
+                            <p>Tap to add photo</p>
+                        </div>
+                        <img id="page-photo-preview" style="display: none;">
+                    </div>
+                    <input type="file" id="page-photo-input" accept="image/*" style="display: none;">
+                    <button onclick="editPagePhoto()" class="edit-photo-btn" id="edit-photo-btn" style="display: none;">
+                        <i class="fas fa-edit"></i> Edit Photo
+                    </button>
+                </div>
+                
+                <div class="comment-section">
+                    <h3>Page Description & Comments</h3>
+                    <textarea id="page-comment" rows="6" placeholder="Add detailed description, observations, and comments for this page..."></textarea>
+                </div>
+            </div>
+            
+            <div class="page-actions">
+                <button onclick="saveCurrentPage()" class="cta-btn"><i class="fas fa-save"></i> Save Page</button>
+                <button onclick="deleteCurrentPage()" class="delete-btn"><i class="fas fa-trash"></i> Delete Page</button>
+            </div>
+        </div>
+
+        <div id="photo-editor-screen" class="screen">
+            <header class="photo-editor-header">
+                <button class="back-btn" onclick="closePhotoEditor()"><i class="fas fa-arrow-left"></i> Back</button>
+                <h1>Photo Editor</h1>
+                <button onclick="savePhotoEdits()" class="save-btn"><i class="fas fa-save"></i> Save</button>
+            </header>
+            <div class="tool-palette">
+                <button class="tool-btn active" data-tool="select" onclick="selectTool('select')"><i class="fas fa-mouse-pointer"></i> Select</button>
+                <button class="tool-btn" data-tool="draw" onclick="selectTool('draw')"><i class="fas fa-pencil-alt"></i> Draw</button>
+                <button class="tool-btn" data-tool="text" onclick="selectTool('text')"><i class="fas fa-font"></i> Text</button>
+                <button class="tool-btn" data-tool="rectangle" onclick="selectTool('rectangle')"><i class="far fa-square"></i> Rectangle</button>
+                <button class="tool-btn" data-tool="circle" onclick="selectTool('circle')"><i class="far fa-circle"></i> Circle</button>
+                <button class="tool-btn" data-tool="arrow" onclick="selectTool('arrow')"><i class="fas fa-arrow-right"></i> Arrow</button>
+                <button class="tool-btn" onclick="clearCanvas()"><i class="fas fa-trash-alt"></i> Clear</button>
+                
+                <div class="color-picker">
+                    <label for="color-input">Color:</label>
+                    <input type="color" id="color-input" value="#e0222a" onchange="changeColor(this.value)">
+                </div>
+                
+                <div class="brush-size-picker">
+                    <label for="brush-size-input">Size:</label>
+                    <input type="range" id="brush-size-input" min="1" max="10" value="3" onchange="changeBrushSize(this.value)">
+                    <span id="brush-size-display">3px</span>
+                </div>
+            </div>
+            <div class="canvas-container">
+                <canvas id="photo-canvas"></canvas>
+            </div>
+            <div class="photo-comment-box">
+                <label for="photo-comment">Photo Description/Comment:</label>
+                <textarea id="photo-comment" rows="3" placeholder="Add description here..."></textarea>
+            </div>
+        </div>
+
+        <div id="help-screen" class="screen">
+            <header>
+                <button class="back-btn" onclick="showHomeScreen()"><i class="fas fa-arrow-left"></i> Back</button>
+                <h1>Help</h1>
+            </header>
+            <div class="help-content">
+                <h3>New Page-Based System</h3>
+                <p><strong>1. Each report now has multiple pages</strong> - Each page can contain one photo and detailed comments</p>
+                <p><strong>2. Page Manager:</strong> Navigate between pages using Previous/Next buttons</p>
+                <p><strong>3. Photo Upload:</strong> Photos are automatically corrected for orientation</p>
+                <p><strong>4. Comments:</strong> Each page has its own comment section that's easy to edit</p>
+                <p><strong>5. PDF Generation:</strong> Creates professional PDF with cover page and all pages</p>
+                
+                <h3>Basic Usage</h3>
+                <p><strong>1. New Report:</strong> Fill out the form to create a new site report.</p>
+                <p><strong>2. Manage Pages:</strong> Click "Manage Pages" to add photos and comments</p>
+                <p><strong>3. Navigation:</strong> Use Previous/Next buttons to move between pages</p>
+                <p><strong>4. Photo Editing:</strong> Click "Edit Photo" to annotate images</p>
+                <p><strong>5. PDF Export:</strong> Generate professional reports with one click</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- External Scripts -->
+    <script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
+    <script src="https://unpkg.com/fabric@latest/dist/fabric.min.js"></script>
+    <script src="./app.js"></script>
+    
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(function(registration) {
+                        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                    })
+                    .catch(function(error) {
+                        console.log('ServiceWorker registration failed: ', error);
+                    });
+            });
+        }
+        
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+        });
+
+        function closePdfNotification() {
+            document.getElementById('pdf-notification').classList.remove('show');
+        }
+
+        // Page photo upload trigger
+        function triggerPagePhotoUpload() {
+            document.getElementById('page-photo-input').click();
+        }
+    </script>
+
+</body>
+</html>
